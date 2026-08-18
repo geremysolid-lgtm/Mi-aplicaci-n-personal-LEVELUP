@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>{% block title %}LEVELUP{% endblock %}</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link
+        href="{{ url_for('static', filename='style.css') }}"
+        rel="stylesheet">
+
+</head>
+
+<body>
+
+<!-- ================================
+     NAVBAR
+================================ -->
+
+<nav class="navbar">
+
+    <a href="/" class="marca">
+
+        <div class="marca-logo">
+
+            <span class="barra1"></span>
+            <span class="barra2"></span>
+            <span class="barra3"></span>
+
+        </div>
+
+        <span class="marca-nombre">
+            LEVEL<span>UP</span>
+        </span>
+
+    </a>
+
+
+    <div class="nav-links">
+
+        <a href="/">Inicio</a>
+
+        <a href="/tareas">Tareas</a>
+
+        <a href="/notas">Notas</a>
+
+        <a href="/estadisticas">Estadísticas</a>
+
+        <a href="/rutina">Rutina</a>
+
+        <a href="/entrenamiento">Gym</a>
+
+        <a href="/asistente">IA</a>
+
+    </div>
+
+</nav>
+
+
+<!-- ================================
+     NIVEL Y XP
+================================ -->
+
+<div class="nivel-barra">
+
+    <div class="nivel-contenido">
+
+        <div class="nivel-badge">
+
+            LVL {{ nivel.nivel }}
+
+        </div>
+
+
+        <div class="nivel-info">
+
+            <div class="nivel-texto">
+
+                <span>
+                    {{ nivel.nombre }}
+                </span>
+
+                <strong>
+                    ⚡ {{ xp }} XP
+                </strong>
+
+            </div>
+
+
+            <progress
+                class="nivel-progress-bar"
+                value="{{ porcentaje_nivel }}"
+                max="100">
+            </progress>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ================================
+     CONTENIDO DE CADA PÁGINA
+================================ -->
+
+<main>
+
+    {% block content %}
+
+    {% endblock %}
+
+</main>
+
+
+</body>
+
+</html>

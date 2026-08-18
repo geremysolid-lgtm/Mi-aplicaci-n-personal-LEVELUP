@@ -1,0 +1,682 @@
+:root {
+    --azul: #0066FF;
+    --azul-osc: #0047B3;
+    --naranja: #FF6B00;
+    --fondo: #0A0A1A;
+    --fondo2: #12122A;
+    --fondo3: #1E1E3A;
+    --texto: #FFFFFF;
+    --texto-gris: #8888AA;
+    --dorado: #FFD700;
+    --exito: #00CC66;
+}
+
+
+/* ================================
+   GENERAL
+================================ */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: var(--fondo);
+    color: var(--texto);
+    font-size: 16px;
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+.contenedor {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 20px 16px;
+}
+
+h1 {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 20px 0 16px;
+    color: var(--texto);
+}
+
+h2 {
+    font-size: 18px;
+    margin: 16px 0 10px;
+    color: var(--texto);
+}
+
+
+/* ================================
+   NAVBAR
+================================ */
+
+.navbar {
+    background: var(--fondo2);
+    border-bottom: 3px solid var(--azul);
+    padding: 0 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    min-height: 56px;
+}
+
+.marca {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+}
+
+.marca-logo {
+    display: flex;
+    gap: 3px;
+    align-items: flex-end;
+    height: 28px;
+}
+
+.marca-logo span {
+    display: block;
+    width: 8px;
+    border-radius: 2px 2px 0 0;
+}
+
+.marca-logo .barra1 {
+    height: 12px;
+    background: var(--naranja);
+}
+
+.marca-logo .barra2 {
+    height: 20px;
+    background: var(--azul);
+}
+
+.marca-logo .barra3 {
+    height: 28px;
+    background: white;
+}
+
+.marca-nombre {
+    font-size: 20px;
+    font-weight: bold;
+    color: var(--texto);
+    letter-spacing: 2px;
+}
+
+.marca-nombre span {
+    color: var(--naranja);
+}
+
+.nav-links {
+    display: flex;
+    gap: 2px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.nav-links a {
+    color: var(--texto-gris);
+    text-decoration: none;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: bold;
+    transition: all 0.2s;
+}
+
+.nav-links a:hover {
+    background: var(--azul);
+    color: white;
+}
+
+
+/* ================================
+   BOTONES
+================================ */
+
+button {
+    padding: 14px 20px;
+    background: var(--azul);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 8px;
+    transition: background 0.2s, transform 0.1s;
+}
+
+button:hover {
+    background: var(--azul-osc);
+}
+
+button:active {
+    transform: scale(0.97);
+}
+
+
+/* ================================
+   INPUTS
+================================ */
+
+input[type="text"],
+input[type="number"],
+input[type="date"],
+textarea {
+    width: 100%;
+    padding: 14px;
+    margin: 6px 0;
+    background: var(--fondo3);
+    border: 2px solid var(--fondo3);
+    border-radius: 10px;
+    color: var(--texto);
+    font-size: 15px;
+}
+
+input:focus,
+textarea:focus {
+    border-color: var(--azul);
+    outline: none;
+    background: var(--fondo2);
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: var(--texto-gris);
+}
+
+
+/* ================================
+   TARJETAS
+================================ */
+
+.card,
+.tarjeta {
+    background: var(--fondo2);
+    border-radius: 16px;
+    border: 2px solid var(--fondo3);
+}
+
+.card {
+    padding: 20px;
+    margin-bottom: 16px;
+}
+
+.tarjeta {
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    display: block;
+}
+
+.tarjeta:hover {
+    border-color: var(--azul);
+    transform: translateY(-3px);
+}
+
+.tarjeta:active {
+    transform: scale(0.97);
+}
+
+
+/* ================================
+   DASHBOARD
+================================ */
+
+.dashboard {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-top: 20px;
+}
+
+.t-icono {
+    font-size: 32px;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.t-nombre {
+    font-size: 13px;
+    color: var(--texto-gris);
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    display: block;
+}
+
+.t-numero {
+    font-size: 32px;
+    font-weight: bold;
+    color: var(--azul);
+    display: block;
+    margin-bottom: 4px;
+}
+
+.t-label {
+    font-size: 12px;
+    color: var(--texto-gris);
+    display: block;
+}
+
+.tarjeta.naranja .t-numero {
+    color: var(--naranja);
+}
+
+.tarjeta.dorado .t-numero {
+    color: var(--dorado);
+}
+
+.tarjeta.exito .t-numero {
+    color: var(--exito);
+}
+
+
+/* ================================
+   BIENVENIDA
+================================ */
+
+.bienvenida {
+    padding: 20px 0 10px;
+    border-bottom: 1px solid var(--fondo3);
+    margin-bottom: 16px;
+}
+
+.bienvenida h1 {
+    font-size: 26px;
+    margin: 0 0 4px;
+}
+
+.fecha-hoy {
+    color: var(--texto-gris);
+    font-size: 14px;
+}
+
+
+/* ================================
+   PROGRESO
+================================ */
+
+.progreso-container {
+    background: var(--fondo2);
+    border-radius: 12px;
+    padding: 16px;
+    margin: 16px 0;
+}
+
+.progreso-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    color: var(--texto-gris);
+    margin-bottom: 8px;
+}
+
+.progreso-label strong {
+    color: var(--azul);
+}
+
+progress {
+    width: 100%;
+    height: 12px;
+}
+
+
+/* ================================
+   RUTINA DIARIA
+================================ */
+
+.rutina-seccion {
+    background: var(--fondo2);
+    border: 2px solid var(--fondo3);
+    border-radius: 16px;
+    padding: 18px;
+    margin-bottom: 16px;
+}
+
+.rutina-seccion h2 {
+    margin-top: 0;
+    margin-bottom: 14px;
+}
+
+
+/* ACTIVIDADES */
+
+.act-item {
+    background: var(--fondo3);
+    border-radius: 12px;
+    padding: 13px;
+    margin-bottom: 8px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 10px;
+}
+
+.act-item span {
+    color: var(--texto);
+}
+
+
+/* BOTÓN HECHO */
+
+.btn-hecho {
+    width: auto;
+    margin: 0;
+    padding: 8px 14px;
+
+    background: var(--azul);
+    color: white;
+
+    border: none;
+    border-radius: 8px;
+
+    font-size: 13px;
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.btn-hecho:hover {
+    background: var(--azul-osc);
+}
+
+
+/* ACTIVIDAD COMPLETADA */
+
+.hecho {
+    color: var(--exito);
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+
+/* ================================
+   TAREAS
+================================ */
+
+.lista-tareas {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.tarea-item {
+    background: var(--fondo3);
+    border-radius: 12px;
+    padding: 13px;
+    margin-bottom: 8px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btn-eliminar {
+    background: #CC3333;
+    color: white;
+    text-decoration: none;
+
+    padding: 6px 10px;
+
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+.btn-eliminar:hover {
+    background: #AA2222;
+}
+
+
+/* ================================
+   ESTADO VACÍO
+================================ */
+
+.estado-vacio {
+    background: var(--fondo3);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    color: var(--texto-gris);
+}
+
+
+/* ================================
+   RESPUESTA IA
+================================ */
+
+.respuesta-ia {
+    background: var(--fondo3);
+    border-left: 4px solid var(--azul);
+    border-radius: 10px;
+    padding: 16px;
+    color: var(--texto);
+    white-space: pre-wrap;
+}
+
+
+/* ================================
+   EJERCICIOS
+================================ */
+
+.ejercicio-card {
+    background: var(--fondo2);
+    border: 2px solid var(--fondo3);
+    border-radius: 16px;
+    padding: 18px;
+    margin-bottom: 16px;
+}
+
+.ejercicio-card.completado {
+    border-color: var(--exito);
+}
+
+.ej-num {
+    width: 40px;
+    height: 40px;
+
+    background: var(--azul);
+    color: white;
+
+    border-radius: 10px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.ej-grupo {
+    color: var(--texto-gris);
+    font-size: 11px;
+    letter-spacing: 1px;
+}
+
+.completado-badge {
+    background: rgba(0, 204, 102, 0.15);
+    color: var(--exito);
+    border: 1px solid var(--exito);
+    border-radius: 10px;
+    padding: 12px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.btn-serie {
+    background: var(--azul);
+}
+
+
+/* ================================
+   RESPONSIVE
+================================ */
+
+@media (max-width: 700px) {
+
+    .navbar {
+        flex-direction: column;
+        padding: 12px;
+        gap: 10px;
+    }
+
+    .nav-links {
+        justify-content: center;
+    }
+
+    .nav-links a {
+        font-size: 12px;
+        padding: 5px 7px;
+    }
+
+    .dashboard {
+        grid-template-columns: 1fr 1fr;
+    }
+
+}
+
+
+@media (max-width: 450px) {
+
+    .dashboard {
+        grid-template-columns: 1fr;
+    }
+
+    .act-item {
+        flex-direction: row;
+    }
+
+    .btn-hecho {
+        flex-shrink: 0;
+    }
+
+}
+/* ================================
+   BARRA DE NIVEL
+================================ */
+
+.nivel-barra {
+    background: var(--fondo2);
+    border-bottom: 1px solid var(--fondo3);
+    padding: 10px 16px;
+}
+
+.nivel-contenido {
+    max-width: 680px;
+    margin: 0 auto;
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.nivel-badge {
+    background: var(--azul);
+    color: white;
+
+    padding: 5px 9px;
+    border-radius: 7px;
+
+    font-size: 12px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.nivel-info {
+    flex: 1;
+}
+
+.nivel-texto {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 5px;
+
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.nivel-texto span {
+    color: var(--texto-gris);
+}
+
+.nivel-texto strong {
+    color: var(--dorado);
+}
+
+.nivel-progress-bar {
+    width: 100%;
+    height: 10px;
+
+    display: block;
+
+    border: none;
+    border-radius: 20px;
+
+    background: var(--fondo3);
+}
+
+/* Chrome / Edge */
+
+.nivel-progress-bar::-webkit-progress-bar {
+    background: var(--fondo3);
+    border-radius: 20px;
+}
+
+.nivel-progress-bar::-webkit-progress-value {
+    background: linear-gradient(
+        90deg,
+        var(--azul),
+        var(--naranja)
+    );
+
+    border-radius: 20px;
+}
+
+/* Firefox */
+
+.nivel-progress-bar::-moz-progress-bar {
+    background: linear-gradient(
+        90deg,
+        var(--azul),
+        var(--naranja)
+    );
+
+    border-radius: 20px;
+}
+
+
+/* MÓVIL */
+
+@media (max-width: 450px) {
+
+    .nivel-contenido {
+        gap: 8px;
+    }
+
+    .nivel-badge {
+        font-size: 10px;
+        padding: 5px 7px;
+    }
+
+    .nivel-texto {
+        font-size: 11px;
+    }
+
+}

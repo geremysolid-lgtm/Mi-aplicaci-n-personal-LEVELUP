@@ -1,0 +1,168 @@
+{% extends "base.html" %}
+
+{% block title %}
+LEVELUP
+{% endblock %}
+
+
+{% block content %}
+
+<div class="contenedor">
+
+    <div class="bienvenida">
+
+        <h1>Hola, Geremy 👋</h1>
+
+        <p class="fecha-hoy">
+            Sube de nivel cada día.
+        </p>
+
+    </div>
+
+
+    <div class="dashboard">
+
+
+        <!-- TAREAS -->
+
+        <a href="/tareas" class="tarjeta">
+
+            <span class="t-icono">
+                📚
+            </span>
+
+            <span class="t-nombre">
+                TAREAS
+            </span>
+
+            <span class="t-numero">
+                →
+            </span>
+
+            <span class="t-label">
+                Ver tareas
+            </span>
+
+        </a>
+
+
+        <!-- NOTAS -->
+
+        <a href="/notas" class="tarjeta naranja">
+
+            <span class="t-icono">
+                📝
+            </span>
+
+            <span class="t-nombre">
+                NOTAS
+            </span>
+
+            <span class="t-numero">
+                →
+            </span>
+
+            <span class="t-label">
+                Ver notas
+            </span>
+
+        </a>
+
+
+        <!-- RUTINA -->
+
+        <a href="/rutina" class="tarjeta">
+
+            <span class="t-icono">
+                📅
+            </span>
+
+            <span class="t-nombre">
+                RUTINA
+            </span>
+
+            <span class="t-numero">
+                →
+            </span>
+
+            <span class="t-label">
+                Rutina diaria
+            </span>
+
+        </a>
+
+
+        <!-- GYM -->
+
+        <a href="/entrenamiento" class="tarjeta dorado">
+
+            <span class="t-icono">
+                🏋️
+            </span>
+
+            <span class="t-nombre">
+                GYM
+            </span>
+
+            <span class="t-numero">
+                HOY
+            </span>
+
+            <span class="t-label">
+                Entrenamiento
+            </span>
+
+        </a>
+
+
+        <!-- ESTADÍSTICAS -->
+
+        <a href="/estadisticas" class="tarjeta exito">
+
+            <span class="t-icono">
+                📊
+            </span>
+
+            <span class="t-nombre">
+                ESTADÍSTICAS
+            </span>
+
+            <span class="t-numero">
+                →
+            </span>
+
+            <span class="t-label">
+                Ver progreso
+            </span>
+
+        </a>
+
+
+        <!-- IA -->
+
+        <a href="/asistente" class="tarjeta">
+
+            <span class="t-icono">
+                🤖
+            </span>
+
+            <span class="t-nombre">
+                IA
+            </span>
+
+            <span class="t-numero">
+                ON
+            </span>
+
+            <span class="t-label">
+                Pregúntame algo
+            </span>
+
+        </a>
+
+
+    </div>
+
+</div>
+
+{% endblock %}

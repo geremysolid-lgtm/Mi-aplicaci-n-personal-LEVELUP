@@ -1,0 +1,176 @@
+{% extends "base.html" %}
+
+{% block title %}
+LEVELUP — Tareas
+{% endblock %}
+
+
+{% block content %}
+
+<div class="contenedor">
+
+    <div class="bienvenida">
+
+        <h1>📚 Mis Tareas</h1>
+
+        <p class="fecha-hoy">
+            Completa tus tareas y gana XP.
+        </p>
+
+    </div>
+
+
+    <!-- =========================
+         AGREGAR TAREA
+    ========================== -->
+
+    <div class="card">
+
+        <h2>➕ Nueva tarea</h2>
+
+        <form method="POST">
+
+            <input
+                type="text"
+                name="tarea"
+                placeholder="Escribe una tarea..."
+                required>
+
+            <button type="submit">
+                ➕ Agregar tarea
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <!-- =========================
+         BUSCAR
+    ========================== -->
+
+    <div class="card">
+
+        <h2>🔍 Buscar</h2>
+
+        <form method="GET">
+
+            <input
+                type="text"
+                name="buscar"
+                placeholder="Buscar tarea..."
+                value="{{ buscar }}">
+
+            <button type="submit">
+                🔍 Buscar
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <!-- =========================
+         LISTA DE TAREAS
+    ========================== -->
+
+    <div class="card">
+
+        <h2>📋 Mis tareas</h2>
+
+
+        {% if tareas %}
+
+            <div class="lista-tareas">
+
+                {% for tarea in tareas %}
+
+                    <div class="tarea-item">
+
+
+                        <div class="tarea-texto">
+
+                            {% if tarea is mapping and tarea.get("completada") %}
+
+                                <span class="tarea-completada">
+                                    ✅ {{ tarea["texto"] }}
+                                </span>
+
+                            {% else %}
+
+                                <span>
+                                    📌 {{ tarea }}
+                                </span>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <div class="tarea-acciones">
+
+
+                            {% if tarea is mapping and tarea.get("completada") %}
+
+                                <span class="hecho">
+                                    HECHA
+                                </span>
+
+                            {% else %}
+
+                                <form
+                                    method="POST"
+                                    action="/tareas/completar">
+
+                                    <input
+                                        type="hidden"
+                                        name="tarea"
+                                        value="{{ tarea }}">
+
+                                    <button
+                                        type="submit"
+                                        class="btn-hecho">
+
+                                        ✓ Hecha
+
+                                    </button>
+
+                                </form>
+
+                            {% endif %}
+
+
+                            <a
+                                class="btn-eliminar"
+                                href="/eliminar/{{ loop.index0 }}">
+
+                                ❌
+
+                            </a>
+
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+
+        {% else %}
+
+            <div class="estado-vacio">
+
+                📭 No se encontraron tareas.
+
+            </div>
+
+        {% endif %}
+
+
+    </div>
+
+</div>
+
+{% endblock %}

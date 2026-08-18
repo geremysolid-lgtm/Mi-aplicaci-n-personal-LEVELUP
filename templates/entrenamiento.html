@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>LEVELUP — Gym</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <a href="/" class="marca">
+
+        <div class="marca-logo">
+
+            <span class="barra1"></span>
+            <span class="barra2"></span>
+            <span class="barra3"></span>
+
+        </div>
+
+        <span class="marca-nombre">
+            LEVEL<span>UP</span>
+        </span>
+
+    </a>
+
+    <div class="nav-links">
+
+        <a href="/">Inicio</a>
+        <a href="/tareas">Tareas</a>
+        <a href="/notas">Notas</a>
+        <a href="/estadisticas">Estadísticas</a>
+        <a href="/rutina">Rutina</a>
+        <a href="/entrenamiento">Gym</a>
+        <a href="/asistente">IA</a>
+
+    </div>
+
+</nav>
+
+
+<main>
+
+    <div class="contenedor">
+
+        <div class="bienvenida">
+
+            <h1>🏋️ {{ rutina.nombre }}</h1>
+
+            <p class="fecha-hoy">
+                {{ rutina.dias }} · ⏱ {{ rutina.duracion }}
+            </p>
+
+        </div>
+
+
+        {% for ejercicio in rutina.ejercicios %}
+
+            {% set completadas = progreso.get(ejercicio.nombre, 0) %}
+
+            <div class="ejercicio-card {% if completadas >= ejercicio.series|int %}completado{% endif %}">
+
+                <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
+
+                    <div class="ej-num">
+                        {{ loop.index }}
+                    </div>
+
+                    <div>
+
+                        <h2 style="margin:0;">
+                            {{ ejercicio.nombre }}
+                        </h2>
+
+                        <span class="ej-grupo">
+                            EJERCICIO {{ loop.index }}
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <p>
+                    <strong>Series:</strong>
+                    {{ ejercicio.series }}
+                </p>
+
+                <p>
+                    <strong>Repeticiones:</strong>
+                    {{ ejercicio.reps }}
+                </p>
+
+
+                <div class="progreso-container">
+
+                    <div class="progreso-label">
+
+                        <span>Progreso</span>
+
+                        <strong>
+                            {{ completadas }} / {{ ejercicio.series }}
+                        </strong>
+
+                    </div>
+
+                    <progress
+                        value="{{ completadas }}"
+                        max="{{ ejercicio.series }}">
+                    </progress>
+
+                </div>
+
+
+                {% if completadas >= ejercicio.series|int %}
+
+                    <div class="completado-badge">
+                        🏆 EJERCICIO COMPLETADO
+                    </div>
+
+                {% else %}
+
+                    <form method="POST" action="/entrenamiento/completar">
+
+                        <input
+                            type="hidden"
+                            name="ejercicio"
+                            value="{{ ejercicio.nombre }}">
+
+                        <button
+                            type="submit"
+                            class="btn-serie">
+
+                            ✅ Completar serie
+
+                        </button>
+
+                    </form>
+
+                {% endif %}
+
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+</main>
+
+</body>
+
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>LEVELUP — IA</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <a href="/" class="marca">
+
+        <div class="marca-logo">
+
+            <span class="barra1"></span>
+            <span class="barra2"></span>
+            <span class="barra3"></span>
+
+        </div>
+
+        <span class="marca-nombre">
+            LEVEL<span>UP</span>
+        </span>
+
+    </a>
+
+    <div class="nav-links">
+
+        <a href="/">Inicio</a>
+        <a href="/tareas">Tareas</a>
+        <a href="/notas">Notas</a>
+        <a href="/estadisticas">Estadísticas</a>
+        <a href="/rutina">Rutina</a>
+        <a href="/entrenamiento">Gym</a>
+        <a href="/asistente">IA</a>
+
+    </div>
+
+</nav>
+
+
+<main>
+
+    <div class="contenedor">
+
+        <div class="bienvenida">
+
+            <h1>🤖 Asistente LEVELUP</h1>
+
+            <p class="fecha-hoy">
+                Pregunta, aprende y sigue subiendo de nivel.
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h2>💬 Hazme una pregunta</h2>
+
+            <form method="POST">
+
+                <textarea
+                    name="pregunta"
+                    rows="5"
+                    placeholder="Ejemplo: ¿Qué es Python?"
+                    required>{{ pregunta }}</textarea>
+
+                <button type="submit">
+                    🚀 Preguntar a LEVELUP IA
+                </button>
+
+            </form>
+
+        </div>
+
+
+        {% if respuesta %}
+
+        <div class="card">
+
+            <h2>🤖 Respuesta</h2>
+
+            <div class="respuesta-ia">
+
+                {{ respuesta }}
+
+            </div>
+
+        </div>
+
+        {% endif %}
+
+
+    </div>
+
+</main>
+
+</body>
+
+</html>

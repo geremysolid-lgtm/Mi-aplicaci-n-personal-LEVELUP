@@ -1,0 +1,465 @@
+{% extends "base.html" %}
+
+{% block title %}
+LEVELUP — Rutina
+{% endblock %}
+
+
+{% block content %}
+
+<div class="contenedor">
+
+    <div class="bienvenida">
+
+        <h1>📅 Rutina Diaria</h1>
+
+        <p class="fecha-hoy">
+            Completa tus actividades y gana XP.
+        </p>
+
+    </div>
+
+
+    <!-- =========================
+         MAÑANA
+    ========================== -->
+
+    <div class="rutina-seccion">
+
+        <h2>🌅 Mañana</h2>
+
+
+        <form method="POST">
+
+            <div class="act-item">
+
+                <span>
+                    Levantarse y ordenar la cama
+                </span>
+
+                {% if progreso.get("Levantarse y ordenar la cama") %}
+
+                    <strong class="hecho">
+                        ✅ HECHO
+                    </strong>
+
+                {% else %}
+
+                    <button
+                        type="submit"
+                        name="actividad"
+                        value="Levantarse y ordenar la cama"
+                        class="btn-hecho">
+
+                        ✓ Hecho
+
+                    </button>
+
+                {% endif %}
+
+            </div>
+
+        </form>
+
+
+        <form method="POST">
+
+            <div class="act-item">
+
+                <span>
+                    Higiene personal
+                </span>
+
+                {% if progreso.get("Higiene personal") %}
+
+                    <strong class="hecho">
+                        ✅ HECHO
+                    </strong>
+
+                {% else %}
+
+                    <button
+                        type="submit"
+                        name="actividad"
+                        value="Higiene personal"
+                        class="btn-hecho">
+
+                        ✓ Hecho
+
+                    </button>
+
+                {% endif %}
+
+            </div>
+
+        </form>
+
+
+        <form method="POST">
+
+            <div class="act-item">
+
+                <span>
+                    Desayunar
+                </span>
+
+                {% if progreso.get("Desayunar") %}
+
+                    <strong class="hecho">
+                        ✅ HECHO
+                    </strong>
+
+                {% else %}
+
+                    <button
+                        type="submit"
+                        name="actividad"
+                        value="Desayunar"
+                        class="btn-hecho">
+
+                        ✓ Hecho
+
+                    </button>
+
+                {% endif %}
+
+            </div>
+
+        </form>
+
+    </div>
+
+
+    <!-- =========================
+         DURANTE EL DÍA
+    ========================== -->
+
+    <div class="rutina-seccion">
+
+        <h2>☀️ Durante el día</h2>
+
+
+        <form method="POST">
+
+            <div class="act-item">
+
+                <span>
+                    Ir al colegio
+                </span>
+
+                {% if progreso.get("Ir al colegio") %}
+
+                    <strong class="hecho">
+                        ✅ HECHO
+                    </strong>
+
+                {% else %}
+
+                    <button
+                        type="submit"
+                        name="actividad"
+                        value="Ir al colegio"
+                        class="btn-hecho">
+
+                        ✓ Hecho
+
+                    </button>
+
+                {% endif %}
+
+            </div>
+
+        </form>
+
+
+        <form method="POST">
+
+            <div class="act-item">
+
+                <span>
+                    Cumplir mis tareas
+                </span>
+
+                {% if progreso.get("Cumplir mis tareas") %}
+
+                    <strong class="hecho">
+                        ✅ HECHO
+                    </strong>
+
+                {% else %}
+
+                    <button
+                        type="submit"
+                        name="actividad"
+                        value="Cumplir mis tareas"
+                        class="btn-hecho">
+
+                        ✓ Hecho
+
+                    </button>
+
+                {% endif %}
+
+            </div>
+
+        </form>
+
+    </div>
+
+
+    <!-- =========================
+         BOOTCAMP
+    ========================== -->
+
+    <div class="rutina-seccion">
+
+        <h2>💻 Bootcamp</h2>
+
+
+        <form method="POST">
+
+            <div class="act-item">
+
+                <span>
+                    Matemática
+                </span>
+
+                {% if progreso.get("Matemática") %}
+
+                    <strong class="hecho">
+                        ✅ HECHO
+                    </strong>
+
+                {% else %}
+
+                    <button
+                        type="submit"
+                        name="actividad"
+                        value="Matemática"
+                        class="btn-hecho">
+
+                        ✓ Hecho
+
+                    </button>
+
+                {% endif %}
+
+            </div>
+
+        </form>
+
+
+        <form method="POST">
+
+            <div class="act-item">
+
+                <span>
+                    Lectura
+                </span>
+
+                {% if progreso.get("Lectura") %}
+
+                    <strong class="hecho">
+                        ✅ HECHO
+                    </strong>
+
+                {% else %}
+
+                    <button
+                        type="submit"
+                        name="actividad"
+                        value="Lectura"
+                        class="btn-hecho">
+
+                        ✓ Hecho
+
+                    </button>
+
+                {% endif %}
+
+            </div>
+
+        </form>
+
+
+        <form method="POST">
+
+            <div class="act-item">
+
+                <span>
+                    Inglés
+                </span>
+
+                {% if progreso.get("Inglés") %}
+
+                    <strong class="hecho">
+                        ✅ HECHO
+                    </strong>
+
+                {% else %}
+
+                    <button
+                        type="submit"
+                        name="actividad"
+                        value="Inglés"
+                        class="btn-hecho">
+
+                        ✓ Hecho
+
+                    </button>
+
+                {% endif %}
+
+            </div>
+
+        </form>
+
+
+        <form method="POST">
+
+            <div class="act-item">
+
+                <span>
+                    Programación Python
+                </span>
+
+                {% if progreso.get("Programación Python") %}
+
+                    <strong class="hecho">
+                        ✅ HECHO
+                    </strong>
+
+                {% else %}
+
+                    <button
+                        type="submit"
+                        name="actividad"
+                        value="Programación Python"
+                        class="btn-hecho">
+
+                        ✓ Hecho
+
+                    </button>
+
+                {% endif %}
+
+            </div>
+
+        </form>
+
+    </div>
+
+
+    <!-- =========================
+         NOCHE
+    ========================== -->
+
+    <div class="rutina-seccion">
+
+        <h2>🌙 Noche</h2>
+
+
+        <form method="POST">
+
+            <div class="act-item">
+
+                <span>
+                    Ordenar mi habitación
+                </span>
+
+                {% if progreso.get("Ordenar mi habitación") %}
+
+                    <strong class="hecho">
+                        ✅ HECHO
+                    </strong>
+
+                {% else %}
+
+                    <button
+                        type="submit"
+                        name="actividad"
+                        value="Ordenar mi habitación"
+                        class="btn-hecho">
+
+                        ✓ Hecho
+
+                    </button>
+
+                {% endif %}
+
+            </div>
+
+        </form>
+
+
+        <form method="POST">
+
+            <div class="act-item">
+
+                <span>
+                    Preparar cosas para mañana
+                </span>
+
+                {% if progreso.get("Preparar cosas para mañana") %}
+
+                    <strong class="hecho">
+                        ✅ HECHO
+                    </strong>
+
+                {% else %}
+
+                    <button
+                        type="submit"
+                        name="actividad"
+                        value="Preparar cosas para mañana"
+                        class="btn-hecho">
+
+                        ✓ Hecho
+
+                    </button>
+
+                {% endif %}
+
+            </div>
+
+        </form>
+
+
+        <form method="POST">
+
+            <div class="act-item">
+
+                <span>
+                    Dormir a tiempo
+                </span>
+
+                {% if progreso.get("Dormir a tiempo") %}
+
+                    <strong class="hecho">
+                        ✅ HECHO
+                    </strong>
+
+                {% else %}
+
+                    <button
+                        type="submit"
+                        name="actividad"
+                        value="Dormir a tiempo"
+                        class="btn-hecho">
+
+                        ✓ Hecho
+
+                    </button>
+
+                {% endif %}
+
+            </div>
+
+        </form>
+
+    </div>
+
+
+</div>
+
+{% endblock %}

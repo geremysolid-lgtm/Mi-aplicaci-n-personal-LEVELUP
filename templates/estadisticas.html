@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>LEVELUP — Estadísticas</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <a href="/" class="marca">
+
+        <div class="marca-logo">
+
+            <span class="barra1"></span>
+            <span class="barra2"></span>
+            <span class="barra3"></span>
+
+        </div>
+
+        <span class="marca-nombre">
+            LEVEL<span>UP</span>
+        </span>
+
+    </a>
+
+    <div class="nav-links">
+
+        <a href="/">Inicio</a>
+        <a href="/tareas">Tareas</a>
+        <a href="/notas">Notas</a>
+        <a href="/estadisticas">Estadísticas</a>
+        <a href="/rutina">Rutina</a>
+        <a href="/entrenamiento">Gym</a>
+        <a href="/asistente">IA</a>
+
+    </div>
+
+</nav>
+
+
+<main>
+
+    <div class="contenedor">
+
+        <div class="bienvenida">
+
+            <h1>📊 Estadísticas</h1>
+
+            <p class="fecha-hoy">
+                Mira tu progreso y sigue subiendo de nivel.
+            </p>
+
+        </div>
+
+
+        <!-- TAREAS -->
+
+        <div class="tarjeta">
+
+            <span class="t-icono">📚</span>
+
+            <span class="t-nombre">
+                TOTAL DE TAREAS
+            </span>
+
+            <span class="t-numero">
+                {{ total_tareas }}
+            </span>
+
+            <span class="t-label">
+                registradas
+            </span>
+
+        </div>
+
+
+        <!-- NOTAS -->
+
+        <div class="tarjeta naranja">
+
+            <span class="t-icono">📝</span>
+
+            <span class="t-nombre">
+                TOTAL DE NOTAS
+            </span>
+
+            <span class="t-numero">
+                {{ total_notas }}
+            </span>
+
+            <span class="t-label">
+                registradas
+            </span>
+
+        </div>
+
+
+        <!-- PROMEDIO -->
+
+        <div class="tarjeta dorado">
+
+            <span class="t-icono">⭐</span>
+
+            <span class="t-nombre">
+                PROMEDIO GENERAL
+            </span>
+
+            <span class="t-numero">
+                {{ promedio }}
+            </span>
+
+            <span class="t-label">
+                promedio actual
+            </span>
+
+        </div>
+
+
+        <!-- PROGRESO -->
+
+        <div class="progreso-container">
+
+            <div class="progreso-label">
+
+                <span>
+                    📈 Rendimiento académico
+                </span>
+
+                <strong>
+                    {{ promedio }} / 20
+                </strong>
+
+            </div>
+
+            <progress
+                value="{{ promedio }}"
+                max="20">
+            </progress>
+
+        </div>
+
+
+    </div>
+
+</main>
+
+</body>
+
+</html>
