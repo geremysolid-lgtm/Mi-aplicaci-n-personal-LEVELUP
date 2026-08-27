@@ -4,7 +4,6 @@
 LEVELUP — Tareas
 {% endblock %}
 
-
 {% block content %}
 
 <div class="contenedor">
@@ -78,7 +77,6 @@ LEVELUP — Tareas
 
         <h2>📋 Mis tareas</h2>
 
-
         {% if tareas %}
 
             <div class="lista-tareas">
@@ -87,19 +85,18 @@ LEVELUP — Tareas
 
                     <div class="tarea-item">
 
-
                         <div class="tarea-texto">
 
-                            {% if tarea is mapping and tarea.get("completada") %}
+                            {% if tarea.completada %}
 
                                 <span class="tarea-completada">
-                                    ✅ {{ tarea["texto"] }}
+                                    ✅ {{ tarea.nombre }}
                                 </span>
 
                             {% else %}
 
                                 <span>
-                                    📌 {{ tarea }}
+                                    📌 {{ tarea.nombre }}
                                 </span>
 
                             {% endif %}
@@ -109,8 +106,7 @@ LEVELUP — Tareas
 
                         <div class="tarea-acciones">
 
-
-                            {% if tarea is mapping and tarea.get("completada") %}
+                            {% if tarea.completada %}
 
                                 <span class="hecho">
                                     HECHA
@@ -124,8 +120,8 @@ LEVELUP — Tareas
 
                                     <input
                                         type="hidden"
-                                        name="tarea"
-                                        value="{{ tarea }}">
+                                        name="id"
+                                        value="{{ tarea.id }}">
 
                                     <button
                                         type="submit"
@@ -142,12 +138,11 @@ LEVELUP — Tareas
 
                             <a
                                 class="btn-eliminar"
-                                href="/eliminar/{{ loop.index0 }}">
+                                href="/eliminar/{{ tarea.id }}">
 
                                 ❌
 
                             </a>
-
 
                         </div>
 
@@ -156,7 +151,6 @@ LEVELUP — Tareas
                 {% endfor %}
 
             </div>
-
 
         {% else %}
 
@@ -167,7 +161,6 @@ LEVELUP — Tareas
             </div>
 
         {% endif %}
-
 
     </div>
 

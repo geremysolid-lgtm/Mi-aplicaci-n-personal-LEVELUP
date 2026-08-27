@@ -2,12 +2,18 @@ from flask import Flask, render_template, request, redirect
 from datetime import date
 from datos import cargar, guardar
 from puntos import sumar_xp, obtener_nivel, obtener_xp, xp_para_siguiente_nivel
-
+from database import db, Tarea, Nota
 from groq import Groq
 from dotenv import load_dotenv
 import os
 
 app = Flask(__name__)
+
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///levelup.db"
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+db.init_app(app)
+
 @app.context_processor
 def datos_nivel():
 
@@ -262,50 +268,17 @@ def completar_serie():
 @app.route("/tareas/completar", methods=["POST"])
 def completar_tarea():
 
-    global lista_tareas
+    tarea_id = request.form.get("id")
 
-    tarea_buscada = request.form.get("tarea")
+    if tarea_id:
+        tarea = db.session.get(Tarea, int(tarea_id))
 
-    if tarea_buscada:
+        if tarea and not tarea.completada:
+            tarea.completada = True
+            db.session.commit()
 
-        for i, tarea in enumerate(lista_tareas):
-
-            # Si la tarea ya tiene formato de diccionario
-            if isinstance(tarea, dict):
-
-                texto = tarea.get("texto", "")
-
-                if texto == tarea_buscada:
-
-                    # Evitar ganar XP otra vez
-                    if tarea.get("completada", False):
-                        break
-
-                    lista_tareas[i]["completada"] = True
-
-                    guardar("tareas.json", lista_tareas)
-
-                    # +10 XP
-                    sumar_xp("tarea")
-
-                    break
-
-            # Si la tarea todavía es texto normal
-            else:
-
-                if tarea == tarea_buscada:
-
-                    lista_tareas[i] = {
-                        "texto": tarea,
-                        "completada": True
-                    }
-
-                    guardar("tareas.json", lista_tareas)
-
-                    # +10 XP
-                    sumar_xp("tarea")
-
-                    break
+            # +10 XP
+            sumar_xp("tarea")
 
     return redirect("/tareas")
 
@@ -317,59 +290,34 @@ def completar_tarea():
 @app.route("/tareas", methods=["GET", "POST"])
 def pagina_tareas():
 
-    global lista_tareas
-
     # AGREGAR TAREA
     if request.method == "POST":
 
         nueva_tarea = request.form.get("tarea")
 
         if nueva_tarea:
-
-            lista_tareas.append(nueva_tarea)
-
-            guardar(
-                "tareas.json",
-                lista_tareas
+            tarea = Tarea(
+                nombre=nueva_tarea,
+                completada=False
             )
 
+            db.session.add(tarea)
+            db.session.commit()
 
     # BUSCADOR
-    buscar = request.args.get(
-        "buscar",
-        ""
-    ).lower()
+    buscar = request.args.get("buscar", "").lower()
 
+    # OBTENER TAREAS DESDE SQLITE
+    tareas = Tarea.query.order_by(Tarea.id.desc()).all()
 
     # FILTRAR TAREAS
     if buscar:
-
-        tareas_filtradas = []
-
-        for tarea in lista_tareas:
-
-            if isinstance(tarea, dict):
-
-                texto = tarea.get(
-                    "texto",
-                    ""
-                )
-
-            else:
-
-                texto = tarea
-
-
-            if buscar in texto.lower():
-
-                tareas_filtradas.append(
-                    tarea
-                )
-
+        tareas_filtradas = [
+            tarea for tarea in tareas
+            if buscar in tarea.nombre.lower()
+        ]
     else:
-
-        tareas_filtradas = lista_tareas
-
+        tareas_filtradas = tareas
 
     return render_template(
         "tareas.html",
@@ -385,19 +333,13 @@ def pagina_tareas():
 @app.route("/eliminar/<int:id>")
 def eliminar(id):
 
-    global lista_tareas
+    tarea = db.session.get(Tarea, id)
 
-    if 0 <= id < len(lista_tareas):
-
-        lista_tareas.pop(id)
-
-        guardar(
-            "tareas.json",
-            lista_tareas
-        )
+    if tarea:
+        db.session.delete(tarea)
+        db.session.commit()
 
     return redirect("/tareas")
-
 
 # =====================================
 # NOTAS
@@ -406,74 +348,63 @@ def eliminar(id):
 @app.route("/notas", methods=["GET", "POST"])
 def notas():
 
-    global lista_notas
-
+    # AGREGAR NOTA
     if request.method == "POST":
 
         materia = request.form.get("materia")
-        nota = request.form.get("nota")
+        nota_valor = request.form.get("nota")
 
-        if materia and nota:
+        if materia and nota_valor:
+            nueva_nota = Nota(
+                materia=materia,
+                nota=float(nota_valor)
+            )
 
-            lista_notas.append({
-                "materia": materia,
-                "nota": float(nota)
-            })
-
-            guardar("notas.json", lista_notas)
+            db.session.add(nueva_nota)
+            db.session.commit()
 
             # +5 XP por registrar una nota
             sumar_xp("nota")
 
+    # OBTENER NOTAS DESDE SQLITE
+    lista_notas_db = Nota.query.order_by(Nota.id.desc()).all()
 
+    # CALCULAR PROMEDIO
     suma = 0
 
-    for elemento in lista_notas:
+    for elemento in lista_notas_db:
+        suma += float(elemento.nota)
 
-        try:
-
-            suma += float(elemento["nota"])
-
-        except:
-
-            pass
-
-
-    if len(lista_notas) > 0:
-
+    if len(lista_notas_db) > 0:
         promedio = round(
-            suma / len(lista_notas),
+            suma / len(lista_notas_db),
             2
         )
-
     else:
-
         promedio = 0
-
 
     return render_template(
         "notas.html",
-        notas=lista_notas,
+        notas=lista_notas_db,
         promedio=promedio
     )
 
 
+# =====================================
+# ELIMINAR NOTA
+# =====================================
+
 @app.route("/eliminar_nota/<int:id>")
 def eliminar_nota(id):
 
-    global lista_notas
+    nota = db.session.get(Nota, id)
 
-    if 0 <= id < len(lista_notas):
-
-        lista_notas.pop(id)
-
-        guardar(
-            "notas.json",
-            lista_notas
-        )
+    if nota:
+        db.session.delete(nota)
+        db.session.commit()
 
     return redirect("/notas")
-
+    
 # =====================================
 # ESTADÍSTICAS
 # =====================================
