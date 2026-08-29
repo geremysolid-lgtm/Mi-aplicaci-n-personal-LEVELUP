@@ -1,13 +1,39 @@
 from flask import Flask, render_template, request, redirect
 from datetime import date
+from dotenv import load_dotenv
+from groq import Groq
+
 from datos import cargar, guardar
 from puntos import sumar_xp, obtener_nivel, obtener_xp, xp_para_siguiente_nivel
-from database import db, Tarea, Nota
-from groq import Groq
-from dotenv import load_dotenv
+
+from database import db, Usuario, Tarea, Nota
+
+from flask_login import (
+    LoginManager,
+    UserMixin,
+    login_user,
+    logout_user,
+    login_required,
+    current_user
+)
+
+from werkzeug.security import (
+    generate_password_hash,
+    check_password_hash
+)
+
 import os
 
 app = Flask(__name__)
+app.secret_key = "clave-secreta-levelup"
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = "login"
+
+@login_manager.user_loader
+def cargar_usuario(user_id):
+    return db.session.get(Usuario, int(user_id))
 
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///levelup.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -266,28 +292,108 @@ def completar_serie():
 # =====================================
 
 @app.route("/tareas/completar", methods=["POST"])
+@login_required
 def completar_tarea():
 
     tarea_id = request.form.get("id")
 
     if tarea_id:
-        tarea = db.session.get(Tarea, int(tarea_id))
+        tarea = Tarea.query.filter_by(
+            id=int(tarea_id),
+            usuario_id=current_user.id
+        ).first()
 
         if tarea and not tarea.completada:
             tarea.completada = True
             db.session.commit()
 
-            # +10 XP
             sumar_xp("tarea")
 
     return redirect("/tareas")
 
 
 # =====================================
+# REGISTRO
+# =====================================
+
+@app.route("/registro", methods=["GET", "POST"])
+def registro():
+
+    if request.method == "POST":
+
+        username = request.form.get("username")
+        email = request.form.get("email")
+        password = request.form.get("password")
+
+        # Comprobar si ya existe
+        usuario_existente = Usuario.query.filter(
+            (Usuario.username == username) |
+            (Usuario.email == email)
+        ).first()
+
+        if usuario_existente:
+            return "El usuario o correo ya existe."
+
+        # Crear usuario
+        nuevo_usuario = Usuario(
+            username=username,
+            email=email,
+            password=generate_password_hash(password)
+        )
+
+        db.session.add(nuevo_usuario)
+        db.session.commit()
+
+        return redirect("/login")
+
+    return render_template("registro.html")
+
+# =====================================
+# LOGIN
+# =====================================
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+
+    if request.method == "POST":
+
+        username = request.form.get("username")
+        password = request.form.get("password")
+
+        usuario = Usuario.query.filter_by(
+            username=username
+        ).first()
+
+        if usuario and check_password_hash(
+            usuario.password,
+            password
+        ):
+            login_user(usuario)
+
+            return redirect("/")
+
+        return "Usuario o contraseña incorrectos."
+
+    return render_template("login.html")
+
+# =====================================
+# LOGOUT
+# =====================================
+
+@app.route("/logout")
+@login_required
+def logout():
+
+    logout_user()
+
+    return redirect("/login")
+
+# =====================================
 # TAREAS
 # =====================================
 
 @app.route("/tareas", methods=["GET", "POST"])
+@login_required
 def pagina_tareas():
 
     # AGREGAR TAREA
@@ -298,7 +404,8 @@ def pagina_tareas():
         if nueva_tarea:
             tarea = Tarea(
                 nombre=nueva_tarea,
-                completada=False
+                completada=False,
+                usuario_id=current_user.id
             )
 
             db.session.add(tarea)
@@ -307,8 +414,10 @@ def pagina_tareas():
     # BUSCADOR
     buscar = request.args.get("buscar", "").lower()
 
-    # OBTENER TAREAS DESDE SQLITE
-    tareas = Tarea.query.order_by(Tarea.id.desc()).all()
+    # OBTENER SOLO LAS TAREAS DEL USUARIO ACTUAL
+    tareas = Tarea.query.filter_by(
+        usuario_id=current_user.id
+    ).order_by(Tarea.id.desc()).all()
 
     # FILTRAR TAREAS
     if buscar:
@@ -325,15 +434,17 @@ def pagina_tareas():
         buscar=buscar
     )
 
-
 # =====================================
 # ELIMINAR TAREA
 # =====================================
-
 @app.route("/eliminar/<int:id>")
+@login_required
 def eliminar(id):
 
-    tarea = db.session.get(Tarea, id)
+    tarea = Tarea.query.filter_by(
+        id=id,
+        usuario_id=current_user.id
+    ).first()
 
     if tarea:
         db.session.delete(tarea)
@@ -341,11 +452,13 @@ def eliminar(id):
 
     return redirect("/tareas")
 
+
 # =====================================
 # NOTAS
 # =====================================
 
 @app.route("/notas", methods=["GET", "POST"])
+@login_required
 def notas():
 
     # AGREGAR NOTA
@@ -357,7 +470,8 @@ def notas():
         if materia and nota_valor:
             nueva_nota = Nota(
                 materia=materia,
-                nota=float(nota_valor)
+                nota=float(nota_valor),
+                usuario_id=current_user.id
             )
 
             db.session.add(nueva_nota)
@@ -366,8 +480,10 @@ def notas():
             # +5 XP por registrar una nota
             sumar_xp("nota")
 
-    # OBTENER NOTAS DESDE SQLITE
-    lista_notas_db = Nota.query.order_by(Nota.id.desc()).all()
+    # OBTENER SOLO LAS NOTAS DEL USUARIO ACTUAL
+    lista_notas_db = Nota.query.filter_by(
+        usuario_id=current_user.id
+    ).order_by(Nota.id.desc()).all()
 
     # CALCULAR PROMEDIO
     suma = 0
@@ -389,22 +505,24 @@ def notas():
         promedio=promedio
     )
 
-
 # =====================================
 # ELIMINAR NOTA
 # =====================================
-
 @app.route("/eliminar_nota/<int:id>")
+@login_required
 def eliminar_nota(id):
 
-    nota = db.session.get(Nota, id)
+    nota = Nota.query.filter_by(
+        id=id,
+        usuario_id=current_user.id
+    ).first()
 
     if nota:
         db.session.delete(nota)
         db.session.commit()
 
     return redirect("/notas")
-    
+
 # =====================================
 # ESTADÍSTICAS
 # =====================================
