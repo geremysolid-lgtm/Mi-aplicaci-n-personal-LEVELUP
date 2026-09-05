@@ -1,3 +1,6 @@
+import random
+import string
+
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from flask_login import UserMixin
@@ -10,10 +13,19 @@ class Usuario(UserMixin, db.Model):
     username = db.Column(db.String(50), unique=True, nullable=False)
     email = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(200), nullable=False)
+
+    rol = db.Column(db.String(10), default="hijo")
+    padre_id = db.Column(db.Integer, db.ForeignKey("usuario.id"), nullable=True)
+    codigo = db.Column(db.String(6), unique=True)
+
     xp_total = db.Column(db.Integer, default=0)
     racha = db.Column(db.Integer, default=0)
     creado = db.Column(db.DateTime, default=datetime.utcnow)
 
+    def generar_codigo(self):
+        self.codigo = "".join(
+            random.choices(string.digits, k=6)
+        )
 
 class Tarea(db.Model):
     id = db.Column(db.Integer, primary_key=True)

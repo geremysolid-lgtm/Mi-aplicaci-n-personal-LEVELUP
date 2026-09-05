@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Panel del Padre - LEVELUP</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            color: #222;
+        }
+
+        .contenedor {
+            max-width: 1100px;
+            margin: auto;
+            padding: 25px;
+        }
+
+        .encabezado {
+            background: #111827;
+            color: white;
+            border-radius: 18px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        .encabezado h1 {
+            margin: 0 0 8px;
+        }
+
+        .encabezado p {
+            margin: 0;
+            color: #d1d5db;
+        }
+
+        .selector {
+            background: white;
+            padding: 18px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .selector label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .selector select {
+            width: 100%;
+            max-width: 400px;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .tarjeta {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+        }
+
+        .tarjeta h3 {
+            margin-top: 0;
+            font-size: 15px;
+            color: #6b7280;
+        }
+
+        .numero {
+            font-size: 30px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .seccion {
+            background: white;
+            border-radius: 15px;
+            padding: 22px;
+            margin-bottom: 20px;
+        }
+
+        .seccion h2 {
+            margin-top: 0;
+        }
+
+        .lista {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .lista li {
+            padding: 12px;
+            margin-bottom: 8px;
+            border-radius: 10px;
+            background: #f3f4f6;
+        }
+
+        .completada {
+            border-left: 5px solid #22c55e;
+        }
+
+        .pendiente {
+            border-left: 5px solid #9ca3af;
+        }
+
+        .nota {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .promedio {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .ejercicio {
+            padding: 12px;
+            background: #f3f4f6;
+            border-radius: 10px;
+            margin-bottom: 8px;
+        }
+
+        .botones {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .boton {
+            display: inline-block;
+            text-decoration: none;
+            background: #111827;
+            color: white;
+            padding: 12px 18px;
+            border-radius: 10px;
+        }
+
+        .boton.secundario {
+            background: #e5e7eb;
+            color: #111827;
+        }
+
+        .sin-datos {
+            color: #6b7280;
+            padding: 10px 0;
+        }
+
+        @media (max-width: 800px) {
+
+            .grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 500px) {
+
+            .contenedor {
+                padding: 15px;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="contenedor">
+
+    <!-- ENCABEZADO -->
+
+    <div class="encabezado">
+
+        <h1>Panel del Padre</h1>
+
+        {% if hijo %}
+            <p>
+                Seguimiento de:
+                <strong>{{ hijo.username }}</strong>
+            </p>
+        {% else %}
+            <p>
+                Todavía no tienes hijos vinculados.
+            </p>
+        {% endif %}
+
+    </div>
+
+
+    {% if hijo %}
+
+        <!-- SELECTOR DE HIJO -->
+
+        {% if hijos|length > 1 %}
+
+        <div class="selector">
+
+            <label for="hijo">
+                Seleccionar hijo
+            </label>
+
+            <select
+                id="hijo"
+                onchange="cambiarHijo(this.value)"
+            >
+
+                {% for h in hijos %}
+
+                    <option
+                        value="{{ h.id }}"
+                        {% if h.id == hijo.id %}selected{% endif %}
+                    >
+                        {{ h.username }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- RESUMEN -->
+
+        <div class="grid">
+
+            <div class="tarjeta">
+
+                <h3>Actividades completadas</h3>
+
+                <div class="numero">
+                    {{ actividades_completadas }}
+                </div>
+
+            </div>
+
+
+            <div class="tarjeta">
+
+                <h3>XP total</h3>
+
+                <div class="numero">
+                    {{ hijo.xp_total or 0 }}
+                </div>
+
+            </div>
+
+
+            <div class="tarjeta">
+
+                <h3>Racha</h3>
+
+                <div class="numero">
+                    {{ hijo.racha or 0 }} 🔥
+                </div>
+
+            </div>
+
+
+            <div class="tarjeta">
+
+                <h3>Promedio</h3>
+
+                <div class="numero">
+                    {{ promedio }}
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- TAREAS -->
+
+        <div class="seccion">
+
+            <h2>📋 Actividades del hijo</h2>
+
+            {% if tareas %}
+
+                <ul class="lista">
+
+                    {% for tarea in tareas %}
+
+                        {% if tarea.completada %}
+
+                            <li class="completada">
+                                ✅ {{ tarea.nombre }}
+                            </li>
+
+                        {% else %}
+
+                            <li class="pendiente">
+                                ⏳ {{ tarea.nombre }}
+                            </li>
+
+                        {% endif %}
+
+                    {% endfor %}
+
+                </ul>
+
+            {% else %}
+
+                <p class="sin-datos">
+                    El hijo todavía no tiene actividades registradas.
+                </p>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- NOTAS -->
+
+        <div class="seccion">
+
+            <h2>📚 Notas escolares</h2>
+
+            <div class="promedio">
+                Promedio: {{ promedio }}
+            </div>
+
+            {% if notas %}
+
+                {% for nota in notas %}
+
+                    <div class="nota">
+
+                        <span>
+                            {{ nota.materia }}
+                        </span>
+
+                        <strong>
+                            {{ nota.nota }}
+                        </strong>
+
+                    </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <p class="sin-datos">
+                    El hijo todavía no tiene notas registradas.
+                </p>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- EJERCICIO -->
+
+        <div class="seccion">
+
+            <h2>💪 Ejercicio de hoy</h2>
+
+            {% if sesiones_gym %}
+
+                <p>
+                    El hijo realizó ejercicio hoy.
+                </p>
+
+                {% for sesion in sesiones_gym %}
+
+                    <div class="ejercicio">
+
+                        <strong>
+                            {{ sesion.ejercicio }}
+                        </strong>
+
+                        <br>
+
+                        Serie completada
+
+                    </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <p class="sin-datos">
+                    Todavía no hay ejercicio registrado hoy.
+                </p>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- RUTINA -->
+
+        <div class="seccion">
+
+            <h2>⚙️ Rutina familiar</h2>
+
+            <p>
+                Configura las actividades que
+                {{ hijo.username }}
+                debe realizar.
+            </p>
+
+            <a
+                class="boton"
+                href="/configurar-rutina/{{ hijo.id }}"
+            >
+                Configurar rutina
+            </a>
+
+        </div>
+
+
+        <!-- BOTONES -->
+
+        <div class="botones">
+
+            <a
+                class="boton"
+                href="/panel-padre"
+            >
+                🔄 Actualizar
+            </a>
+
+            <a
+                class="boton secundario"
+                href="/logout"
+            >
+                Cerrar sesión
+            </a>
+
+        </div>
+
+    {% else %}
+
+        <div class="seccion">
+
+            <h2>No hay hijos vinculados</h2>
+
+            <p>
+                Crea una cuenta para tu hijo utilizando
+                el código de familia de esta cuenta.
+            </p>
+
+            <p>
+                Cuando el hijo se registre correctamente,
+                aparecerá aquí.
+            </p>
+
+            <a
+                class="boton"
+                href="/logout"
+            >
+                Cerrar sesión
+            </a>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+
+<script>
+
+function cambiarHijo(id) {
+
+    window.location.href =
+        "/panel-padre?hijo_id=" + id;
+
+}
+
+</script>
+
+</body>
+</html>

@@ -10,7 +10,7 @@ LEVELUP — Registro
 
     <div class="bienvenida">
 
-        <h1>👤 Crear cuenta</h1>
+        <h1>Crear cuenta</h1>
 
         <p class="fecha-hoy">
             Crea tu cuenta para comenzar tu progreso en LEVELUP.
@@ -21,7 +21,7 @@ LEVELUP — Registro
 
     <div class="card">
 
-        <h2>📝 Registro</h2>
+        <h2>Registro</h2>
 
         <form method="POST">
 
@@ -43,14 +43,40 @@ LEVELUP — Registro
                 placeholder="Contraseña"
                 required>
 
+
+            <label for="rol">
+                Tipo de cuenta:
+            </label>
+
+            <select name="rol" id="rol" required>
+
+                <option value="padre">
+                    Padre
+                </option>
+
+                <option value="hijo">
+                    Hijo
+                </option>
+
+            </select>
+
+
+            <input
+                type="text"
+                name="codigo_padre"
+                placeholder="Código del padre (solo si eres hijo)">
+
+
             <button type="submit">
-                🚀 Crear cuenta
+                Crear cuenta
             </button>
 
         </form>
 
+
         <p>
             ¿Ya tienes una cuenta?
+
             <a href="/login">
                 Iniciar sesión
             </a>

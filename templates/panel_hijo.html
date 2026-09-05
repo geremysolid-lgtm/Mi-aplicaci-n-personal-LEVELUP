@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel del Hijo - LEVELUP</title>
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+</head>
+<body>
+<div class="contenedor">
+    <div class="bienvenida">
+        <h1>Hola, {{ hijo.username }} 👋</h1>
+        <p>{{ mensaje }}</p>
+    </div>
+
+    <div class="card">
+        <h2>⚡ Tu Progreso</h2>
+        <p><strong>Nivel:</strong> {{ nivel.nivel }} ({{ nivel.nombre }})</p>
+        <p><strong>XP Total:</strong> {{ xp }} XP</p>
+        <p><strong>Racha:</strong> {{ hijo.racha or 0 }} días 🔥</p>
+    </div>
+
+    <div class="card">
+        <h2>📋 Mis Tareas Pendientes</h2>
+        {% if tareas_pendientes %}
+            <ul>
+                {% for tarea in tareas_pendientes %}
+                    <li>📌 {{ tarea.nombre }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>¡No tienes tareas pendientes! Buen trabajo.</p>
+        {% endif %}
+    </div>
+
+    <div class="card">
+        <h2>🏆 Mis Logros</h2>
+        {% if logros %}
+            <ul>
+                {% for logro in logros %}
+                    <li>{{ logro }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Completa actividades para desbloquear logros.</p>
+        {% endif %}
+    </div>
+
+    <div style="margin-top: 20px;">
+        <a href="/logout" class="btn-eliminar" style="background:#111827; color:white; padding:10px 15px; text-decoration:none; border-radius:8px;">Cerrar sesión</a>
+    </div>
+</div>
+</body>
+</html>
